@@ -13,6 +13,7 @@ fi
 
 # Constants
 last_state="./directory-info.last"
+new_state="./directory-info.new"
 
 # Storing arguments as variables
 dir="$1"
@@ -42,9 +43,22 @@ if [ ! -f "$last_state" ]; then
     ls -l "$dir" > directory-info.last
 fi
 
+function scan {
+    echo "Difference found"
+}
+
 # Main loop
 # Only run every <interval> seconds
 while true; do
     sleep $interval
     ls -l "$dir" > directory-info.new
+
+    # Compare state differences, skip if no change
+    cmp -s "$new_state" "$last_state" && continue
+
+    # Perform file scan
+    scan
+
+    # Update last_state with new_state
+    cp "$new_state" "$last_state"
 done

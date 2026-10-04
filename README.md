@@ -45,7 +45,7 @@ The program checks if the file content contains any one of these *exact* words:
 This is a feature-based plan created solely for my own convenience as a measure to track the progress of this project.
 You can view this to get an overview of how the project was planned and what features are currently being worked on.
 
-### antivirusd.sh
+### [antivirusd.sh](#antivirusdsh)
 
 #### Initial Skeleton
 
@@ -63,3 +63,35 @@ You can view this to get an overview of how the project was planned and what fea
 
 #### Comparison
 
+[x] Compare the `directory-info.new` with the `directory-info.last` and check for differences
+
+[x] Skip to next loop if no differences are detected
+
+[x] Copy `directory-info.last` into `directory-info.new` if differences are detected
+
+#### Malicious Detection
+
+[ ] Setup extension array and word array that records malicious keywords and extensions stated in [Malicious File Definition](#malicious-file-definition) section
+
+[ ] Complete scan function to implement following steps:
+
+[ ] Loop through all files in **dir** and only scan files
+
+[ ] Check if the file basename ends with a malicious extension
+
+[ ] Check, using `grep`, if a malicious keyword exists in the file content
+
+[ ] If either of the above two were fulfilled, start [Action on Detection](#action-on-detection) steps
+
+#### Action on Detection
+
+[ ] Print to the terminal: `<file> is malicious and it is DELETED`
+
+[ ] Copy the file into **malicious_dir**, keeping its original filename
+
+[ ] Delete the original file from **dir**
+
+### [restore.sh](#restoresh)
+
+>[!NOTE]
+> Will be planned soon!

@@ -40,7 +40,7 @@ fi
 # Perform state preservation 
 # if directory-info.last does not exist
 if [ ! -f "$last_state" ]; then
-    ls -l "$dir" > directory-info.last
+    ls -l "$dir" > "$last_state"
 fi
 
 function scan {
@@ -51,7 +51,7 @@ function scan {
 # Only run every <interval> seconds
 while true; do
     sleep $interval
-    ls -l "$dir" > directory-info.new
+    ls -l "$dir" > "$new_state"
 
     # Compare state differences, skip if no change
     cmp -s "$new_state" "$last_state" && continue

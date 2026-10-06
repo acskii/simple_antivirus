@@ -95,32 +95,34 @@ You can view this to get an overview of how the project was planned and what fea
 
 [x] On the very first run, perform a scan immediately then create `directory-info.last` from the current state.
 
+[ ] Same file name and extension are both in malicious and scanned directory. (Might not be an edge case)
+
 ### [restore.sh](#restoresh)
 
 #### User Menu
 
-[ ] List all files in **malicious_dir**
+[x] List all files in **malicious_dir**
 
-[ ] Present **three** options *after* file selection:
+[x] Present **three** options *after* file selection:
 
-[ ] Input 1: Restore this file back into **dir**
+[x] Input 1: Restore this file back into **dir**
 
-[ ] Input 2: Permanently delete this file from **malicious_dir**
+[x] Input 2: Permanently delete this file from **malicious_dir**
 
-[ ] Input 3: Leave this file as-is and go back to the list
+[x] Input 3: Leave this file as-is and go back to the list
 
 #### Actions
 
-[ ] Input 1: Move file back into **dir**
+[x] Input 1: Move file back into **dir**
 
-[ ] Input 2: Remove file
+[x] Input 2: Remove file
 
-[ ] Input 3: List all files in **malicious_dir** again
+[x] Input 3: List all files in **malicious_dir** again
 
 #### Logging
 
-[ ] Log `Restored <file> to <dir>.` after input 1
+[x] Log `Restored <file> to <dir>.` after input 1
 
-[ ] Log `<file> permanently deleted.` after input 2
+[x] Log `<file> permanently deleted.` after input 2
 
-[ ] Log `No malicious files to review.` if **malicious_dir** is empty
+[x] Log `No malicious files to review.` if **malicious_dir** is empty

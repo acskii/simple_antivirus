@@ -14,6 +14,8 @@ fi
 # Constants
 last_state="./directory-info.last"
 new_state="./directory-info.new"
+malicious_ext=(".exe" ".bat" ".vbs" ".scr" ".ps1")
+malicious_text=("virus" "trojan" "malware" "worm" "ransomware")
 
 # Storing arguments as variables
 dir="$1"
@@ -37,15 +39,50 @@ if [ $interval -le 0 ]; then
     exit 1
 fi
 
-# Perform state preservation 
-# if directory-info.last does not exist
-if [ ! -f "$last_state" ]; then
-    ls -l "$dir" > "$last_state"
-fi
+function act {
+    file="$1"
+
+    cp "$dir/$file" "$malicious_dir/$file"
+
+    rm "$dir/$file"
+
+    echo "$file is malicious and it is DELETED"
+}
 
 function scan {
-    echo "Difference found"
+    for file in "$dir"/*; do
+        # Extract only file basename
+        [ -f "$file" ] || continue
+        filename="${file##*/}"
+        m=false
+
+        # Check file extension against malicious ones
+        for ext in "${malicious_ext[@]}"; do
+            if [[ "$filename" == *"$ext" ]]; then
+                m=true
+                break
+            fi
+        done
+
+        # Check file content against malicious words
+        for word in "${malicious_text[@]}"; do
+            if grep -qw "$word" "$file"; then
+                m=true
+                break
+            fi
+        done
+
+        # Act on malicious detection
+        [ "$m" == true ] && act "$filename"
+    done
 }
+
+# Perform state preservation and initial scan
+# if directory-info.last does not exist
+if [ ! -f "$last_state" ]; then
+    scan
+    ls -l "$dir" > "$last_state"
+fi
 
 # Main loop
 # Only run every <interval> seconds

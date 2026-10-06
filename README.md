@@ -71,25 +71,26 @@ You can view this to get an overview of how the project was planned and what fea
 
 #### Malicious Detection
 
-[ ] Setup extension array and word array that records malicious keywords and extensions stated in [Malicious File Definition](#malicious-file-definition) section
+[x] Setup extension array and word array that records malicious keywords and extensions stated in [Malicious File Definition](#malicious-file-definition) section
 
-[ ] Complete scan function to implement following steps:
+[x] Complete scan function to implement following steps:
 
-[ ] Loop through all files in **dir** and only scan files
+[x] Loop through all files in **dir** and only scan files
 
-[ ] Check if the file basename ends with a malicious extension
+[x] Check if the file basename ends with a malicious extension
 
-[ ] Check, using `grep`, if a malicious keyword exists in the file content
+[x] Check, using `grep`, if a malicious keyword exists in the file content
 
-[ ] If either of the above two were fulfilled, start [Action on Detection](#action-on-detection) steps
+[x] If either of the above two were fulfilled, start [Action on Detection](#action-on-detection) steps
 
 #### Action on Detection
 
-[ ] Print to the terminal: `<file> is malicious and it is DELETED`
+[x] Print to the terminal: `<file> is malicious and it is DELETED`
 
-[ ] Copy the file into **malicious_dir**, keeping its original filename
+[x] Copy the file into **malicious_dir**, keeping its original filename
 
-[ ] Delete the original file from **dir**
+[x] Delete the original file from **dir**
+
 
 ### [restore.sh](#restoresh)
 

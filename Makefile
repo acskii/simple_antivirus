@@ -1,4 +1,5 @@
 ANTIVIRUS := antivirusd.sh
+RESTORE := restore.sh
 MAL_DIR := mal
 TARGET_DIR := .
 DEFAULT_INTERVAL := 5
@@ -25,3 +26,8 @@ prebuild: ## Setup required files before running
 virusd:	## Run antivirus daemon
 	chmod +x "$(ANTIVIRUS)"
 	"./$(ANTIVIRUS)" $(TARGET_DIR) $(MAL_DIR) $(DEFAULT_INTERVAL)
+
+.PHONY: restore
+restore: ## Run restore tool
+	chmod +x "$(RESTORE)"
+	"./$(RESTORE)" $(TARGET_DIR) $(MAL_DIR)

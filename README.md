@@ -91,6 +91,9 @@ You can view this to get an overview of how the project was planned and what fea
 
 [x] Delete the original file from **dir**
 
+#### Edge Case
+
+[x] On the very first run, perform a scan immediately then create `directory-info.last` from the current state.
 
 ### [restore.sh](#restoresh)
 

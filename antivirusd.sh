@@ -96,6 +96,6 @@ while true; do
     # Perform file scan
     scan
 
-    # Update last_state with new_state
-    cp "$new_state" "$last_state"
+    # Update last_state
+    ls -l "$dir" > "$last_state"
 done

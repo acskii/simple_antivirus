@@ -63,7 +63,7 @@ function scan {
 
         # Check file content against malicious words
         for word in "${malicious_text[@]}"; do
-            if grep -qw "$word" "$file"; then
+            if grep -q "$word" "$file"; then
                 m=true
                 break
             fi
@@ -90,5 +90,5 @@ cmp -s "$new_state" "$last_state" && continue
 # Perform file scan
 scan
 
-# Update last_state with new_state
-cp "$new_state" "$last_state"
+# Update last_state
+ls -l "$dir" > "$last_state"

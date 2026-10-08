@@ -66,7 +66,7 @@ function scan {
 
         # Check file content against malicious words
         for word in "${malicious_text[@]}"; do
-            if grep -qw "$word" "$file"; then
+            if grep -q "$word" "$file"; then
                 m=true
                 break
             fi

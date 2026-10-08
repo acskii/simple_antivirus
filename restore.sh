@@ -15,6 +15,7 @@ dir="$1"
 malicious_dir="$2"
 file=""
 option=""
+files=()
 
 # Making sure both directories exist
 if [ ! -d "$dir" ]; then
@@ -28,14 +29,17 @@ if [ ! -d "$malicious_dir" ]; then
 fi
 
 function list {
-    found=false
+    local -i found=0
+    files=()
     
     for f in "$malicious_dir"/*; do
-        echo "${f##*/}"
-        found=true
+        if [ -f "$f" ]; then
+            found+=1
+            files+=("${f##*/}")
+        fi
     done
 
-    if [ "$found" == false ]; then
+    if [ "$found" -eq 0 ]; then
         echo "No malicious files to review."
         return 1
     fi
@@ -44,41 +48,45 @@ function list {
 
 function menu {
     # Allow file selection from list
-    local choice selected_option
-    # Prompt for filename until a valid one is given (or empty to cancel)
-    while true; do
-        # Read user input
-        read -r -p "Enter filename to review: " choice
+    local selected_option
+    local OLD_PS3="$PS3"
 
-        # Verify that file exists in the list
-        if [ -f "$malicious_dir/$choice" ]; then
-            break
-        fi
-
-        # Output to error stream
-        echo "No such file in $malicious_dir: $choice" >&2
-    done
-
-    # Present options
-    echo
-    echo "Selected: $choice"
-    echo "  1) Restore this file back into $dir"
-    echo "  2) Permanently delete this file from $malicious_dir"
-    echo "  3) Leave this file as-is and go back to the list"
-    echo
+    PS3="> "
 
     while true; do
-        read -r -p "Choice [1-3]: " selected_option
+        # Present the files using the native select prompt
+        select choice in "${files[@]}"; do
+            # choice will contain the actual filename string if valid
+            if [[ -n "$choice" ]]; then
+                echo
+                echo "For: $choice"
+                echo "  1) Restore this file back into $dir"
+                echo "  2) Permanently delete this file from $malicious_dir"
+                echo "  3) Leave this file as-is and go back to the list"
+                echo
 
-        [[ "$selected_option" -ge 1 && "$selected_option" -le 3 ]] && break
-        
-        # Output to error stream
-        echo "Invalid choice, enter 1, 2, or 3." >&2
+                while true; do
+                    read -r -p "> " selected_option
+                    if [[ "$selected_option" =~ ^[1-3]$ ]]; then
+                        break
+                    fi
+                    echo "Invalid choice, enter 1, 2, or 3." >&2
+                done
+
+                # Assign the global variables safely
+                file="$choice"
+                option="$selected_option"
+                
+                # Break out of the select loop
+                break 2 
+            else
+                # $REPLY contains what they typed if it was invalid
+                echo "No such option: $REPLY" >&2
+                break
+            fi
+        done
     done
-
-    # Return selection
-    file="$choice"
-    option="$selected_option"
+    PS3="$OLD_PS3"
 }
 
 # Main loop

@@ -3,20 +3,103 @@
 ## Table of Contents
 
 - [Overview](#overview)
-- [Setup](#setup)
 - [Running](#running)
+  - [Antivirus](#running-the-antivirus-tool)
+  - [Restore](#running-the-restore-tool)
 - [Malicious File Definition](#malicious-file-definition)
 - [Plan](#plan)
 
 ## Overview
 
-## Setup
+A simple antivirus system implemented entirely in Bash.
 
-```bash
-chmod +x antivirusd.sh
-```
+It [watches](#antivirusdsh) a directory for [suspicious](#malicious-file-definition) files, quarantines anything that looks malicious, and provides an interactive [tool](#restoresh) to review, restore, or permanently delete quarantined files.
 
 ## Running
+
+### Running the antivirus tool
+
+There are **two** ways to execute the antivirus program: [single process](#single-process) or [cron job](#cron-job)
+
+#### Single Process
+
+This can be run using the [Makefile](./Makefile) provided in the project.
+
+For a full list of all targets, run `make help` in the terminal.
+
+To run the antivirus program, only run this command:
+
+```bash
+make
+```
+
+This runs the default `all` target in the Makefile that executes `prebuild` and `virusd` sequentially. Check the Makefile for more details.
+
+#### Cron Job
+
+>[!NOTE]
+>
+> As part of the assignment, it is required to provide the cron expression for running the antivirus program scan every **3rd** **Friday** of the month at **12:31 am**
+>
+> *Answer:* `31 0 15-21 * 5`
+
+Follow the following steps to schedule the cron job:
+
+1. Make sure `crontab` is available in your system by running:
+
+    ```bash
+        man crontab
+    ```
+
+    Although it is usually pre-packaged in any Linux distribution.
+
+2. Make sure that your user is not denied access to cron jobs by running these commands:
+
+    ```bash
+        cd /etc && cat cron.deny 
+    ```
+
+    If you find your username, remove it from `cron.deny`.
+
+3. Copy the absolute path to [antivirus-cron.sh](./antivirus-cron.sh), your scan **dir** and quarantine **malicious_dir** using `pwd`.
+
+4. Run:
+
+    ```bash
+        crontab -e
+    ```
+
+5. Paste this line into the `nano` screen that is displayed then press `Ctrl + X` and `Y`:
+
+    ```bash
+    * * * * * sleep 23 && /path/to/antivirus-cron.sh /path/to/dir /path/to/malicious/dir
+    ```
+
+6. Verify successful cron job scheduling by running:
+
+    ```bash
+        crontab -l
+    ```
+
+    You should see the **same** command that was used in previous step in this list.
+
+To remove the cron job, use:
+
+```bash
+    crontab -r
+```
+
+### Running the restore tool
+
+This can be run using the [Makefile](./Makefile) provided in the project.
+
+For a full list of all targets, run `make help` in the terminal.
+
+To run the restore program, only run this command:
+
+```bash
+make restore
+```
 
 ## Malicious File Definition
 
@@ -45,7 +128,7 @@ The program checks if the file content contains any one of these *exact* words:
 This is a feature-based plan created solely for my own convenience as a measure to track the progress of this project.
 You can view this to get an overview of how the project was planned and what features are currently being worked on.
 
-### [antivirusd.sh](#antivirusdsh)
+### [antivirusd.sh](./antivirusd.sh)
 
 #### Initial Skeleton
 
@@ -95,9 +178,7 @@ You can view this to get an overview of how the project was planned and what fea
 
 [x] On the very first run, perform a scan immediately then create `directory-info.last` from the current state.
 
-[ ] Same file name and extension are both in malicious and scanned directory. (Might not be an edge case)
-
-### [restore.sh](#restoresh)
+### [restore.sh](./restore.sh)
 
 #### User Menu
 
